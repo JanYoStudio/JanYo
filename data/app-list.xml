@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<app-list>
+    <app>
+        <name>name1</name>
+        <icon>路径</icon>
+        <type>类型</type>
+        <packageName>包名</packageName>
+        <description>描述，说明，简介</description>
+        <latestVersion>最新版本</latestVersion>
+        <latestUpdateLog>更新日志</latestUpdateLog>
+        <downloadLink>
+            <coolapk>酷安</coolapk>
+            <googlePlay>Google Play</googlePlay>
+        </downloadLink>
+        <source>源码</source>
+        <history>
+            <apk url="地址">版本号</apk>
+        </history>
+    </app>
+    <app>
+        <name>name2</name>
+        <icon>路径</icon>
+        <type>类型</type>
+        <packageName>包名</packageName>
+        <description>描述，说明，简介</description>
+        <latestVersion>最新版本</latestVersion>
+        <latestUpdateLog>更新日志</latestUpdateLog>
+        <downloadLink>
+            <coolapk>酷安</coolapk>
+            <googlePlay>Google Play</googlePlay>
+        </downloadLink>
+        <source>源码</source>
+        <history>
+            <apk url="地址">版本号</apk>
+        </history>
+    </app>
+</app-list>
