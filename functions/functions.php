@@ -11,7 +11,7 @@
 function uploadFile($filename, $tmp_name, $targetAddress)
 {
     if (file_exists($targetAddress . $filename)) {
-        alertMessage('文件已存在！');
+        alertMessage("文件 $targetAddress$filename 已存在！");
         return false;
     }
     if (is_uploaded_file($tmp_name)) {
@@ -85,16 +85,56 @@ function mkdirs($dir, $mode = 0777)
     return @mkdir($dir, $mode);
 }
 
-function writeAPPintoXML()
+function writeAPPintoXML(APP $app)
 {
-    $appFile = "data/app-list.xml";
+    $appFile = "../data/app-list.xml";
     $file = new DOMDocument();
     $file->load($appFile);
-    $targetNode=$file->getElementsByTagName('app-list')->item(0);
-    $app = $file->createElement('app');
+    $targetNode = $file->getElementsByTagName('app-list')->item(0);
+    $appNode = $file->createElement('app');
     $name = $file->createElement('name');
-    $name->nodeValue = 'name1';
-    $app->appendChild($name);
-    $targetNode->appendChild($app);
+    $name->nodeValue = $app->name;
+    $icon = $file->createElement('icon');
+    $icon->nodeValue = $app->icon;
+    $type = $file->createElement('type');
+    $type->nodeValue = $app->type;
+    $packageName = $file->createElement('packageName');
+    $packageName->nodeValue = $app->packageName;
+    $description = $file->createElement('description');
+    $description->nodeValue = $app->description;
+    $latestVersion = $file->createElement('latestVersion');
+    $latestVersion->nodeValue = $app->latestVersion;
+    $latestUpdateLog = $file->createElement('latestUpdateLog');
+    $latestUpdateLog->nodeValue = $app->latestUpdateLog;
+    $downloadLink = $file->createElement('downloadLink');
+    $coolapkQRCode = $file->createElement('coolapkQRCode');
+    $coolapkQRCode->nodeValue = $app->coolapkQRCode;
+    $coolapk = $file->createElement('coolapk');
+    $coolapk->nodeValue = $app->coolapk;
+    $googlePlay = $file->createElement('googlePlay');
+    $googlePlay->nodeValue = $app->googlePlay;
+    $source = $file->createElement('source');
+    $source->nodeValue = $app->source;
+    $history = $file->createElement('history');
+    $apk = $file->createElement('apk');
+    $apk->setAttribute('url', $app->apkURL);
+    $apk->nodeValue = $app->latestVersion;
+
+    $downloadLink->appendChild($coolapkQRCode);
+    $downloadLink->appendChild($coolapk);
+    $downloadLink->appendChild($googlePlay);
+    $history->appendChild($apk);
+
+    $appNode->appendChild($name);
+    $appNode->appendChild($icon);
+    $appNode->appendChild($type);
+    $appNode->appendChild($packageName);
+    $appNode->appendChild($description);
+    $appNode->appendChild($latestVersion);
+    $appNode->appendChild($latestUpdateLog);
+    $appNode->appendChild($downloadLink);
+    $appNode->appendChild($source);
+    $appNode->appendChild($history);
+    $targetNode->appendChild($appNode);
     $file->save($appFile);
 }

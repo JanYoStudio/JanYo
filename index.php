@@ -50,8 +50,7 @@
                 <div class="mdui-card mdui-hoverable mdui-col-xs-12 mdui-m-t-4">
                     <!-- 卡片头部，包含头像、标题、副标题 -->
                     <div class="mdui-card-header">
-                        <img class="mdui-card-header-avatar"
-                             src="http://janyo.pw/WebSiteRes/image/app/jy_share/jy_share_icon.png"/>
+                        <?php echo "<img class='mdui-card-header-avatar' src='$icon'>" ?>
                         <div class="mdui-card-header-title"><?php echo $name . '-' . $latestVersion ?></div>
                         <div class="mdui-card-header-subtitle"><?php echo $type ?></div>
                     </div>
@@ -61,12 +60,12 @@
                         <div class="mdui-panel" mdui-panel>
                             <div class="mdui-panel-item">
                                 <div class="mdui-panel-item-header">
-                                    <div class="mdui-panel-item-title"><?php echo $latestUpdateLog ?></div>
+                                    <div class="mdui-panel-item-title">更新日志</div>
                                     <div class="mdui-panel-item-summary">更新时间</div>
                                     <i class="mdui-panel-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                                 </div>
                                 <div class="mdui-panel-item-body">
-                                    <?php echo $latestUpdateLog ?>
+                                    <p><?php echo $latestUpdateLog ?></p>
                                 </div>
                             </div>
                         </div>
