@@ -6,25 +6,30 @@
     <script src="//cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
     <title>JanYo Studio</title>
 </head>
-<body>
+<body class="mdui-appbar-with-toolbar mdui-appbar-with-tab">
 <div>
     <!--顶部工具栏-->
-    <div class="mdui-toolbar mdui-color-blue">
-        <a href="index.php" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">&#xe88a;</i></a>
-        <span class="mdui-typo-title">JanYo Studio</span>
-        <div class="mdui-toolbar-spacer"></div>
-        <div class="mdui-textfield mdui-textfield-expandable mdui-float-right">
-            <button class="mdui-textfield-icon mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i>
-            </button>
-            <input class="mdui-textfield-input" type="text" placeholder="Search"/>
-            <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">close</i>
-            </button>
+    <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-toolbar-hide">
+        <div class="mdui-toolbar mdui-color-blue">
+            <a href="index.php" class="mdui-btn mdui-btn-icon"><i
+                        class="mdui-icon material-icons">&#xe88a;</i></a>
+            <span class="mdui-typo-title">JanYo Studio</span>
+            <div class="mdui-toolbar-spacer"></div>
+            <div class="mdui-textfield mdui-textfield-expandable mdui-float-right">
+                <button class="mdui-textfield-icon mdui-btn mdui-btn-icon"><i
+                            class="mdui-icon material-icons">search</i>
+                </button>
+                <input class="mdui-textfield-input" type="text" placeholder="Search"/>
+                <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i
+                            class="mdui-icon material-icons">close</i>
+                </button>
+            </div>
         </div>
-    </div>
-    <!--Tab-->
-    <div class="mdui-tab mdui-tab-centered mdui-tab-full-width mdui-color-blue" mdui-tab>
-        <a href="#product" class="mdui-ripple">作品</a>
-        <a href="#about" class="mdui-ripple">关于</a>
+        <!--Tab-->
+        <div class="mdui-tab mdui-tab-centered mdui-tab-full-width mdui-color-blue" mdui-tab>
+            <a href="#product" class="mdui-ripple">作品</a>
+            <a href="#about" class="mdui-ripple">关于</a>
+        </div>
     </div>
     <!--作品页-->
     <div id="product" class="mdui-container">
@@ -78,11 +83,9 @@
                 </div>
                 <?php
                 $downloadLink = $app->downloadLink[0];
+                $coolapkQRCode = $downloadLink->children()->coolapkQRCode[0];
                 $coolapk = $downloadLink->children()->coolapk[0];
                 $googlePlay = $downloadLink->children()->googlePlay[0];
-                foreach ($app->history[0]->children() as $apk) {
-                    $url = $apk->attributes();
-                }
             }
             ?>
         </div>
@@ -122,11 +125,14 @@
                                         License）”授权协议。工作室将在产品内部标识产品源程序及其附属品，使得任何人可以自由获取、阅读、传播，以及基于源代码重新构建它的二进制版本并发行该副本。</p>
                                     <p>工作室希望使用者在自由使用我们的产品时，尊重工作室的劳动成果，承认工作室的知识产权。</p>
                                     <p>工作室保证产品的自由使用、传播、阅读不受限，使用者应保障工作室的合法权益：</p>
-                                    <strong><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(0)针对开源资料，禁止删改原作者注明的版权、授权方式 等信息。</p>
+                                    <strong>
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(0)针对开源资料，禁止删改原作者注明的版权、授权方式 等信息。</p>
                                     </strong>
-                                    <strong><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1)源代码允许自由使用、添加至自己的项目，但必须注明来源，以及源的授权协议。</p>
+                                    <strong>
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1)源代码允许自由使用、添加至自己的项目，但必须注明来源，以及源的授权协议。</p>
                                     </strong>
-                                    <strong><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2)在从事盈利、商用活动中，针对产品的传播复制需注明来源，以及源的授权协议。</p>
+                                    <strong>
+                                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2)在从事盈利、商用活动中，针对产品的传播复制需注明来源，以及源的授权协议。</p>
                                     </strong>
                                     <p>针对产品授权、答疑可电邮至工作室官方电子邮箱 : mystery0dyl520@gmail.com</p>
                                 </div>
@@ -151,11 +157,36 @@
     <div class="mdui-dialog" id="downloadDialog">
         <div class="mdui-dialog-title">下载</div>
         <div class="mdui-dialog-content">
+            <p>酷安下载二维码</p>
+            <p><?php echo "<img src='$coolapkQRCode'/>" ?></p>
         </div>
-        <div class="mdui-dialog-actions">
+        <div class="mdui-dialog-actions mdui-dialog-actions-stacked">
+            <?php
+            echo "<a href='$coolapk'>";
+            ?>
             <button class="mdui-btn mdui-ripple">酷安下载</button>
+            <?php
+            echo "</a><a href='$googlePlay'>";
+            ?>
             <button class="mdui-btn mdui-ripple">Google Play下载</button>
-            <button class="mdui-btn mdui-ripple">历史下载</button>
+            <?php
+            echo "</a>";
+            ?>
+            <button class="mdui-btn mdui-ripple" mdui-dialog-close
+                    mdui-dialog="{target: '#history'}">历史下载
+            </button>
+        </div>
+    </div>
+    <!--历史下载对话框-->
+    <div class="mdui-dialog" id="history">
+        <div class="mdui-dialog-title">历史版本下载</div>
+        <div class="mdui-dialog-content mdui-list">
+            <?php
+            foreach ($app->history[0]->children() as $apk) {
+                $url = $apk->attributes();
+                echo "<a href='$url' class='mdui-list-item mdui-ripple'>$apk</a>";
+            }
+            ?>
         </div>
     </div>
 </div>

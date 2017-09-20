@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <app-list>
     <app>
         <name>name1</name>
@@ -9,6 +9,8 @@
         <latestVersion>最新版本</latestVersion>
         <latestUpdateLog>更新日志</latestUpdateLog>
         <downloadLink>
+            <coolapkQRCode>http://janyo.pw/WebSiteRes/image/app/jy_share/jy_share_qr.png
+            </coolapkQRCode>
             <coolapk>酷安</coolapk>
             <googlePlay>Google Play</googlePlay>
         </downloadLink>
@@ -18,7 +20,7 @@
         </history>
     </app>
     <app>
-        <name>name2</name>
+        <name>name1</name>
         <icon>路径</icon>
         <type>类型</type>
         <packageName>包名</packageName>
@@ -26,6 +28,8 @@
         <latestVersion>最新版本</latestVersion>
         <latestUpdateLog>更新日志</latestUpdateLog>
         <downloadLink>
+            <coolapkQRCode>http://janyo.pw/WebSiteRes/image/app/jy_share/jy_share_qr.png
+            </coolapkQRCode>
             <coolapk>酷安</coolapk>
             <googlePlay>Google Play</googlePlay>
         </downloadLink>
