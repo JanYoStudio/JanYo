@@ -12,6 +12,11 @@ if (!$_FILES) {
     exit;
 }
 $name = $_POST['name'];
+if ($name == '') {
+    alertMessage('数据异常！');
+    echo "<script language=JavaScript> location.replace('../manager.php');</script>";
+    exit;
+}
 $type = $_POST['type'];
 $packageName = $_POST['packageName'];
 $description = $_POST['description'];

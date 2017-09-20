@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="//cdn.bootcss.com/mdui/0.3.0/css/mdui.min.css">
     <script src="//cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
-    <script>
-        function submit()
-        {
-            document.getElementById("newAPP").submit();
-        }
-    </script>
     <title>Title</title>
 </head>
 <body>
@@ -72,7 +66,8 @@
     <div class="mdui-dialog" id="uploadAPP">
         <div class="mdui-dialog-title">新建应用</div>
         <div class="mdui-dialog-content">
-            <form action="functions/uploadAPP.php" enctype="multipart/form-data" id="newAPP" method="post">
+            <form action="functions/uploadAPP.php" enctype="multipart/form-data" id="newAPP"
+                  method="post">
                 <div class="mdui-textfield mdui-textfield-floating-label">
                     <label class="mdui-textfield-label">软件名称</label>
                     <input class="mdui-textfield-input" type="text" name="name"/>
@@ -124,7 +119,9 @@
             </form>
         </div>
         <div class="mdui-dialog-actions">
-            <button class="mdui-btn mdui-ripple" onclick="submit()">保存</button>
+            <button class="mdui-btn mdui-ripple"
+                    onclick="document.getElementById('newAPP').submit();">保存
+            </button>
         </div>
     </div>
 </div>

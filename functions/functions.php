@@ -85,6 +85,11 @@ function mkdirs($dir, $mode = 0777)
     return @mkdir($dir, $mode);
 }
 
+/**
+ * Created by PhpStorm.
+ * User: myste
+ * @param APP $app: 要保存到xml中的app对象
+ */
 function writeAPPintoXML(APP $app)
 {
     $appFile = "../data/app-list.xml";
