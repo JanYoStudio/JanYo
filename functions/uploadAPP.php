@@ -6,6 +6,7 @@
 header("Content-type:text/html;charset=utf-8");
 require_once 'functions.php';
 require_once '../classes/APP.php';
+
 if (!$_FILES) {
     alertMessage('文件不存在！');
     echo "<script language=JavaScript> location.replace('../manager.php');</script>";

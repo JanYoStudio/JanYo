@@ -50,7 +50,7 @@
                 <div class="mdui-card mdui-hoverable mdui-col-xs-12 mdui-m-t-4">
                     <!-- 卡片头部，包含头像、标题、副标题 -->
                     <div class="mdui-card-header">
-                        <?php echo "<img class='mdui-card-header-avatar' src='$icon'>" ?>
+                        <img class='mdui-card-header-avatar' src="<?php echo $icon ?>">
                         <div class="mdui-card-header-title"><?php echo $name . '-' . $latestVersion ?></div>
                         <div class="mdui-card-header-subtitle"><?php echo $type ?></div>
                     </div>
@@ -75,8 +75,8 @@
                         <button class="mdui-btn mdui-ripple mdui-btn-raised mdui-color-blue"
                                 mdui-dialog="{target: '#downloadDialog'}">下载
                         </button>
-                        <?php echo "<a href='$source' >" ?>
-                        <button class="mdui-btn mdui-ripple mdui-btn-raised mdui-color-blue">源码</button>
+                        <a href="<?php echo $source ?>">
+                            <button class="mdui-btn mdui-ripple mdui-btn-raised mdui-color-blue">源码</button>
                         </a>
                     </div>
                 </div>
@@ -107,8 +107,9 @@
                 </div>
                 <!-- 卡片的内容 -->
                 <div class="mdui-card-content">
-                    <p>Email:<?php echo "<a href='mailto:$emailLink'>$emailLink</a>" ?></p>
-                    <p>QQ内测群链接：<?php echo "<a href='$qqGroup'>点击跳转</a>" ?></p>
+                    <p>Email:<a href="mailto:<?php echo $emailLink ?>"><?php echo $emailLink ?></a>
+                    </p>
+                    <p>QQ内测群链接：<a href="<?php echo $qqGroup ?>">点击跳转</a></p>
                     <div class="mdui-panel mdui-panel-gapless" mdui-panel>
                         <div class="mdui-panel-item">
                             <div class="mdui-panel-item-header">
@@ -157,20 +158,15 @@
         <div class="mdui-dialog-title">下载</div>
         <div class="mdui-dialog-content">
             <p>酷安下载二维码</p>
-            <p><?php echo "<img src='$coolapkQRCode'/>" ?></p>
+            <p><img src="<?php echo $coolapkQRCode ?>"/></p>
         </div>
         <div class="mdui-dialog-actions mdui-dialog-actions-stacked">
-            <?php
-            echo "<a href='$coolapk'>";
-            ?>
-            <button class="mdui-btn mdui-ripple">酷安下载</button>
-            <?php
-            echo "</a><a href='$googlePlay'>";
-            ?>
-            <button class="mdui-btn mdui-ripple">Google Play下载</button>
-            <?php
-            echo "</a>";
-            ?>
+            <a href="<?php echo $coolapk ?>">
+                <button class="mdui-btn mdui-ripple">酷安下载</button>
+            </a>
+            <a href="<?php echo $googlePlay ?>">
+                <button class="mdui-btn mdui-ripple">Google Play下载</button>
+            </a>
             <button class="mdui-btn mdui-ripple" mdui-dialog-close
                     mdui-dialog="{target: '#history'}">历史下载
             </button>

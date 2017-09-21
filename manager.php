@@ -27,6 +27,7 @@
                 $index = 1;
                 foreach ($appXML->children() as $app) {
                     $name = $app->name[0];
+                    $packageName = $app->packageName[0];
                     $latestVersion = $app->latestVersion[0];
                     ?>
                     <tr>
@@ -34,7 +35,9 @@
                         <td><?php echo $name ?></td>
                         <td><?php echo $latestVersion ?></td>
                         <td>
-                            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue">更新应用</button>
+                            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue"
+                                    mdui-dialog="{target: '#updateAPK<?php echo $index ?>'}">更新应用
+                            </button>
                             <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue">查看日志</button>
                         </td>
                     </tr>
@@ -128,33 +131,44 @@
         </div>
     </div>
     <?php
+    $index = 1;
     foreach ($appXML->children() as $app) {
         $name = $app->name[0];
+        $packageName = $app->packageName[0];
         $latestVersion = $app->latestVersion[0];
         ?>
         <!--更新软件对话框-->
-        <div class="mdui-dialog" id="updateAPK">
+        <div class="mdui-dialog" id="updateAPK<?php echo $index ?>">
             <div class="mdui-dialog-title">应用名称：<?php echo $name ?></div>
             <div class="mdui-dialog-content">
-                <div class="mdui-textfield mdui-textfield-floating-label">
-                    <label class="mdui-textfield-label">本次版本</label>
-                    <input class="mdui-textfield-input" type="text" name="apkVersion"/>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">更新日志(将被追加)</label>
-                    <textarea class="mdui-textfield-input" name="updateLog"></textarea>
-                </div>
-                <div class="mdui-textfield">
-                    <label class="mdui-textfield-label">apk文件</label>
-                    <input class="mdui-textfield-input" type="file" name="apkFile"/>
-                </div>
+                <form action="functions/updateAPK.php" enctype="multipart/form-data"
+                      id="newAPK-<?php echo $packageName ?>"
+                      method="post">
+                    <?php echo "<input name='name' type='text' value='$name' hidden/>" ?>
+                    <?php echo "<input name='name' type='text' value='$name' hidden/>" ?>
+                    <div class="mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">本次版本</label>
+                        <input class="mdui-textfield-input" type="text" name="apkVersion"/>
+                    </div>
+                    <div class="mdui-textfield">
+                        <label class="mdui-textfield-label">更新日志(将被追加)</label>
+                        <textarea class="mdui-textfield-input" name="updateLog"></textarea>
+                    </div>
+                    <div class="mdui-textfield">
+                        <label class="mdui-textfield-label">apk文件</label>
+                        <input class="mdui-textfield-input" type="file" name="apkFile"/>
+                    </div>
+                </form>
             </div>
             <div class="mdui-dialog-actions">
                 <button class="mdui-btn mdui-ripple">取消</button>
-                <button class="mdui-btn mdui-ripple">完成</button>
+                <button class="mdui-btn mdui-ripple"
+                        onclick="document.getElementById('newAPK-<?php echo $packageName ?>').submit();">完成
+                </button>
             </div>
         </div>
         <?php
+        $index++;
     }
     ?>
 </div>

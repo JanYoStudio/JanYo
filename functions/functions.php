@@ -88,7 +88,7 @@ function mkdirs($dir, $mode = 0777)
 /**
  * Created by PhpStorm.
  * User: myste
- * @param APP $app: 要保存到xml中的app对象
+ * @param APP $app : 要保存到xml中的app对象
  */
 function writeAPPintoXML(APP $app)
 {
@@ -141,5 +141,18 @@ function writeAPPintoXML(APP $app)
     $appNode->appendChild($source);
     $appNode->appendChild($history);
     $targetNode->appendChild($appNode);
+    $file->save($appFile);
+}
+
+function writeAPKtoXML(APK $apk)
+{
+    $appFile = "../data/app-list.xml";
+    $file = new DOMDocument();
+    $file->load($appFile);
+    $targetNode = $file->getElementsByTagName('app-list')->item(0)->getElementsByTagName('history')->item(0);
+    $newAPK = $file->createElement('apk');
+    $newAPK->setAttribute('url', $apk->url);
+    $newAPK->nodeValue = $apk->version;
+    $targetNode->appendChild($newAPK);
     $file->save($appFile);
 }
