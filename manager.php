@@ -33,7 +33,10 @@
                         <td><?php echo $index ?></td>
                         <td><?php echo $name ?></td>
                         <td><?php echo $latestVersion ?></td>
-                        <td><?php echo $index ?></td>
+                        <td>
+                            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue">更新应用</button>
+                            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue">查看日志</button>
+                        </td>
                     </tr>
                     <?php
                     $index++;
@@ -124,6 +127,36 @@
             </button>
         </div>
     </div>
+    <?php
+    foreach ($appXML->children() as $app) {
+        $name = $app->name[0];
+        $latestVersion = $app->latestVersion[0];
+        ?>
+        <!--更新软件对话框-->
+        <div class="mdui-dialog" id="updateAPK">
+            <div class="mdui-dialog-title">应用名称：<?php echo $name ?></div>
+            <div class="mdui-dialog-content">
+                <div class="mdui-textfield mdui-textfield-floating-label">
+                    <label class="mdui-textfield-label">本次版本</label>
+                    <input class="mdui-textfield-input" type="text" name="apkVersion"/>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">更新日志(将被追加)</label>
+                    <textarea class="mdui-textfield-input" name="updateLog"></textarea>
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-label">apk文件</label>
+                    <input class="mdui-textfield-input" type="file" name="apkFile"/>
+                </div>
+            </div>
+            <div class="mdui-dialog-actions">
+                <button class="mdui-btn mdui-ripple">取消</button>
+                <button class="mdui-btn mdui-ripple">完成</button>
+            </div>
+        </div>
+        <?php
+    }
+    ?>
 </div>
 </body>
 </html>
