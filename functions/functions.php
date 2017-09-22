@@ -1,4 +1,5 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 /**
  * Created by PhpStorm.
  * User: myste
@@ -101,7 +102,7 @@ function mkdirs($dir, $mode = 0777)
  */
 function writeAPPintoXML(APP $app)
 {
-    $appFile = "../data/app-list.xml";
+    $appFile = WWW."/data/app-list.xml";
     $file = new DOMDocument();
     $file->load($appFile);
     $targetNode = $file->getElementsByTagName('app-list')->item(0);
@@ -151,6 +152,19 @@ function writeAPPintoXML(APP $app)
     $appNode->appendChild($history);
     $targetNode->appendChild($appNode);
     $file->save($appFile);
+
+    $logFile = WWW."/data/log-list.xml";
+    $file = new DOMDocument();
+    $file->load($logFile);
+    $targetNode = $file->getElementsByTagName('log-list')->item(0);
+    $appNode = $file->createElement('app');
+    $name = $file->createElement('name');
+    $name->nodeValue = $app->name;
+    $logs = $file->createElement('logs');
+    $appNode->appendChild($name);
+    $appNode->appendChild($logs);
+    $targetNode->appendChild($appNode);
+    $file->save($logFile);
 }
 
 /**
@@ -161,7 +175,7 @@ function writeAPPintoXML(APP $app)
  */
 function writeAPKtoXML($name, APK $apk)
 {
-    $appFile = "../data/app-list.xml";
+    $appFile = WWW."/data/app-list.xml";
     $file = new DOMDocument();
     $file->load($appFile);
     $item = null;
@@ -194,7 +208,7 @@ function writeAPKtoXML($name, APK $apk)
  */
 function writeLogToXML(Log $log)
 {
-    $logFile = '../data/log-list.xml';
+    $logFile = WWW.'/data/log-list.xml';
     $file = new DOMDocument();
     $file->load($logFile);
     $targetNode = null;
@@ -240,7 +254,7 @@ function writeLogToXML(Log $log)
  */
 function getPackageName($appName)
 {
-    $appFile = "../data/app-list.xml";
+    $appFile = WWW."/data/app-list.xml";
     $file = new DOMDocument();
     $file->load($appFile);
     $item = null;
@@ -264,7 +278,7 @@ function getPackageName($appName)
  */
 function sendEmail($fileName)
 {
-    $email_list_xml_file = "../data/email-list.xml";
+    $email_list_xml_file = WWW."/data/email-list.xml";
     $email_list = new DOMDocument();
     $email_list->load($email_list_xml_file);
     $emailNode = $email_list->getElementsByTagName("email");
@@ -285,7 +299,7 @@ function sendEmail($fileName)
 //发送邮件
 function send($address, $fileName)
 {
-    require '../lib/mail/PHPMailerAutoload.php';
+    require WWW.'/lib/mail/PHPMailerAutoload.php';
     $date = $_POST['date'];
     $appName = $_POST['appName'];
     $appVersion = $_POST['appVersionName'] . "_" . $_POST['appVersionCode'];

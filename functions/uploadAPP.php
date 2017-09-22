@@ -3,9 +3,9 @@
  * Created by PhpStorm.
  * User: myste
  */
-header("Content-type:text/html;charset=utf-8");
-require_once '../functions/functions.php';
-require_once '../classes/APP.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+require_once WWW . '/functions/functions.php';
+require_once WWW . '/classes/APP.php';
 $manager = '../manager.php';
 
 $name = $_POST['name'];
@@ -23,8 +23,8 @@ $coolapkQRCode_tmp_name = $_FILES['coolapkQRCode']['tmp_name'];
 $coolapkQRCode_error = $_FILES['coolapkQRCode']['error'];
 $file_tmp_name = $_FILES['file']['tmp_name'];
 $file_error = $_FILES['file']['error'];
-$img_target_address = "../res/imgRes/";
-$file_target_address = "../res/apk/$packageName/";
+$img_target_address = WWW . "/res/imgRes/";
+$file_target_address = WWW . "/res/apk/$packageName/";
 
 if (!mkdirs($img_target_address)) {
     alertMessage("创建文件夹失败！");

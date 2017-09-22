@@ -22,7 +22,8 @@
                 </thead>
                 <tbody>
                 <?php
-                $appFile = "data/app-list.xml";
+                require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+                $appFile = WWW . "/data/app-list.xml";
                 $appXML = simplexml_load_file($appFile);
                 $index = 1;
                 foreach ($appXML->children() as $app) {
@@ -52,24 +53,23 @@
         </div>
     </div>
     <!--悬浮按钮-->
-    <!--        <div class="mdui-fab-wrapper" mdui-fab="{trigger: 'hover'}">-->
-    <button class="mdui-fab mdui-color-blue mdui-ripple mdui-fab-fixed"
-            mdui-dialog="{target: '#uploadAPP'}">
-        <i class="mdui-icon material-icons">add</i>
-        <i class="mdui-icon mdui-fab-opened material-icons">add</i>
-    </button>
-    <!--悬浮菜单-->
-    <!--        <div class="mdui-fab-dial">-->
-    <!--            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-pink"><i-->
-    <!--                        class="mdui-icon material-icons">backup</i></button>-->
-    <!--            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-red"><i-->
-    <!--                        class="mdui-icon material-icons">bookmark</i></button>-->
-    <!--            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-orange"><i-->
-    <!--                        class="mdui-icon material-icons">access_alarms</i></button>-->
-    <!--            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-blue"><i-->
-    <!--                        class="mdui-icon material-icons">touch_app</i></button>-->
-    <!--        </div>-->
-    <!--    </div>-->
+    <div class="mdui-fab-wrapper" mdui-fab="{trigger: 'hover'}">
+        <button class="mdui-fab mdui-color-blue mdui-ripple">
+            <i class="mdui-icon material-icons">add</i>
+            <i class="mdui-icon mdui-fab-opened material-icons">add</i>
+        </button>
+        <!--悬浮菜单-->
+        <div class="mdui-fab-dial">
+            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-pink"
+                    mdui-tooltip="{content: '新增APP'}" mdui-dialog="{target: '#uploadAPP'}">
+                <i class="mdui-icon material-icons">add</i>
+            </button>
+            <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-red"
+                    mdui-tooltip="{content: '设置'}" mdui-dialog="{target: '#settings'}">
+                <i class="mdui-icon material-icons">settings</i>
+            </button>
+        </div>
+    </div>
     <!--新增软件对话框-->
     <div class="mdui-dialog" id="uploadAPP">
         <div class="mdui-dialog-title">新建应用</div>
@@ -173,6 +173,70 @@
         $index++;
     }
     ?>
+    <!--设置对话框-->
+    <div class="mdui-dialog" id="settings">
+        <div class="mdui-tab mdui-tab-full-width" id="settings-tab">
+            <a href="#settings-info" class="mdui-ripple">信息设置</a>
+            <a href="#settings-mail" class="mdui-ripple">邮件设置</a>
+        </div>
+        <div id="settings-info" class="mdui-p-a-2">
+            <?php
+            $aboutFile = WWW . "/data/about.xml";
+            $about = simplexml_load_file($aboutFile);
+            foreach ($about->children() as $child) {
+                ?>
+                <div class="mdui-textfield mdui-textfield-floating-label">
+                    <label class="mdui-textfield-label"><?php echo $child->getName() ?></label>
+                    <textarea class="mdui-textfield-input"><?php echo $child ?></textarea>
+                </div>
+                <?php
+            }
+            ?>
+        </div>
+        <div id="settings-mail" class="mdui-p-a-2">
+            <?php
+            $email_list_xml_file = WWW . "/data/email-list.xml";
+            $email_list = new DOMDocument();
+            $email_list->load($email_list_xml_file);
+            $emailNode = $email_list->getElementsByTagName("email");
+            for ($i = 0; $i < $emailNode->length; $i++) {
+                $address = $emailNode->item($i)->nodeValue;
+                ?>
+                <div class="mdui-chip">
+                    <form action="functions/deleteEmailAddress.php" method="post"
+                          name="deleteAddress">
+                        <input type="email" name="email" value="<?php echo $address ?>" hidden>
+                        <span class="mdui-chip-title"><?php echo $address ?></span>
+                        <span class="mdui-chip-delete">
+                        <a href="javascript:void(document.deleteAddress.submit())">
+                        <i class="mdui-icon material-icons">cancel</i>
+                        </a>
+                    </span>
+                    </form>
+                </div>
+                <?php
+            }
+            ?>
+            <div class="mdui-chip">
+                <form action="functions/addEmailAddress.php" method="post" name="addAddress">
+                <span class="mdui-chip-title">
+                        <input type="email" name="email">
+                </span>
+                    <span class="mdui-chip-delete">
+                        <a href="javascript:void(document.addAddress.submit())">
+                        <i class="mdui-icon material-icons">add</i>
+                        </a>
+                </span>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        var tab = new mdui.Tab('#settings-tab');
+        document.getElementById('settings').addEventListener('open.mdui.dialog', function () {
+            tab.handleUpdate();
+        });
+    </script>
 </div>
 </body>
 </html>

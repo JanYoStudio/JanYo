@@ -3,9 +3,9 @@
  * Created by PhpStorm.
  * User: myste
  */
-header("Content-type:text/html;charset=utf-8");
-require_once '../functions/functions.php';
-require_once '../classes/APK.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+require_once WWW.'/functions/functions.php';
+require_once WWW.'/classes/APK.php';
 $manager = '../manager.php';
 
 $name = $_POST['name'];
@@ -14,7 +14,7 @@ $apkVersion = $_POST['apkVersion'];
 $updateLog = nl2br($_POST['updateLog']);
 $file_tmp_name = $_FILES['apkFile']['tmp_name'];
 $file_error = $_FILES['apkFile']['error'];
-$file_target_address = "../res/apk/$packageName/";
+$file_target_address = WWW."/res/apk/$packageName/";
 if (!mkdirs($file_target_address)) {
     alertMessage("创建文件夹失败！");
     forwardTo($manager);

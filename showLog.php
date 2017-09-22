@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>查看日志</title>
     <link rel="stylesheet" href="//cdn.bootcss.com/mdui/0.3.0/css/mdui.min.css">
     <script src="//cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
     <script type="text/javascript">
@@ -16,7 +16,8 @@
         }
     </script>
     <?php
-    require_once 'functions/functions.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+    require_once WWW.'/functions/functions.php';
     ?>
 </head>
 <body>
@@ -40,7 +41,7 @@
                 <tbody>
                 <?php
                 $name = $_GET['appName'];
-                $appFile = "data/log-list.xml";
+                $appFile = WWW."/data/log-list.xml";
                 $appXML = simplexml_load_file($appFile);
                 $targetNode = null;
                 $index = 1;
@@ -62,6 +63,7 @@
                     $androidSDK = $logNode->androidSDK[0];
                     $date = $logNode->date[0];
                     $logFile = $logNode->logFile[0];
+                    $packageName = getPackageName($name);
                     ?>
                     <tr>
                         <td><?php echo $index; ?></td>
@@ -72,6 +74,10 @@
                         <td><?php echo $androidSDK; ?></td>
                         <td><?php echo $date; ?></td>
                         <td>
+                            <a href="res/log/<?php echo $packageName . '/' . $logFile ?>">
+                                <button class="mdui-btn mdui-ripple mdui-color-blue-accent">查看源文件
+                                </button>
+                            </a>
                             <button class="mdui-btn mdui-ripple mdui-color-blue-accent"
                                     onclick="showDialog('<?php echo $name; ?>','<?php echo $logFile; ?>')">在线查看
                             </button>
