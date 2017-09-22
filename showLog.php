@@ -5,6 +5,8 @@
     <title>查看日志</title>
     <link rel="stylesheet" href="//cdn.bootcss.com/mdui/0.3.0/css/mdui.min.css">
     <script src="//cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
+    <link rel="shortcut icon" href="res/jy_studio_logo.jpg" />
+    <link rel="bookmark" href="res/jy_studio_logo.jpg" type="image/x-icon"/>
     <script type="text/javascript">
         function showDialog(appName, logFile)
         {
