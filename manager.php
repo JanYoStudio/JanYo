@@ -6,6 +6,19 @@
     <script src="//cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
     <title>管理员操作</title>
 </head>
+<?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+require_once WWW . '/functions/functions.php';
+
+if (!isset($_COOKIE['secret_key'])) {
+    jumpToSignIn();
+} else {
+    $key = $_COOKIE['secret_key'];
+    if (!validateSecretKey($key)) {
+        jumpToSignIn();
+    }
+}
+?>
 <body>
 <div>
     <!--表格-->
@@ -22,7 +35,6 @@
                 </thead>
                 <tbody>
                 <?php
-                require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                 $appFile = WWW . "/data/app-list.xml";
                 $appXML = simplexml_load_file($appFile);
                 $index = 1;

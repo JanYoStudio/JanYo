@@ -332,3 +332,40 @@ function send($address, $fileName)
         return true;
     }
 }
+
+
+// 跳转登录页面
+function jumpToSignIn() {
+    header("Cache-Control: no-cache");
+    header('Location: admin_signIn.php?redirect=manager.php');
+}
+
+function getPassword($uid) {
+    $conn = new mysqli("localhost", "janyo_admin", "janyo_iloveu", "janyo_manager");
+    if (!$conn) {
+        return null;
+    }
+
+    $fetch = $conn->query("select uid,password from admins where uid=\"$uid\"");
+    $result = $fetch->fetch_row();
+    if (!result) {
+        return null;
+    }
+    $conn->close();
+    // Security check
+    if ($uid != $result[0]) {
+        return null;
+    }
+
+    return $result[1];
+}
+
+function validateSecretKey($key) {
+    $split = explode("@", base64_decode($key));
+    if (count($split) != 3) {
+        return false;
+    }
+
+    $toCheck = getPassword($split[1]);
+    return $toCheck && $toCheck == $split[2];
+}
