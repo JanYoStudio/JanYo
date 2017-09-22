@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="//cdn.bootcss.com/mdui/0.3.0/css/mdui.min.css">
     <script src="//cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
-    <link rel="shortcut icon" href="res/jy_studio_logo.jpg" />
+    <link rel="shortcut icon" href="res/jy_studio_logo.jpg"/>
     <link rel="bookmark" href="res/jy_studio_logo.jpg" type="image/x-icon"/>
     <title>JanYo Studio</title>
 </head>
@@ -21,7 +21,10 @@
                 <button class="mdui-textfield-icon mdui-btn mdui-btn-icon"><i
                             class="mdui-icon material-icons">search</i>
                 </button>
-                <input class="mdui-textfield-input" type="text" placeholder="Search"/>
+                <form action="index.php" method="get">
+                    <input class="mdui-textfield-input" type="text" placeholder="Search"
+                           name="name"/>
+                </form>
                 <button class="mdui-textfield-close mdui-btn mdui-btn-icon"><i
                             class="mdui-icon material-icons">close</i>
                 </button>
@@ -37,19 +40,25 @@
     <div id="product" class="mdui-container">
         <div class="mdui-row">
             <?php
-$appFile = "data/app-list.xml";
-$appXML = simplexml_load_file($appFile);
-$index = 0;
-foreach ($appXML->children() as $app) {
-	$name = $app->name[0];
-	$icon = $app->icon[0];
-	$type = $app->type[0];
-	$packageName = $app->packageName[0];
-	$description = $app->description[0];
-	$latestVersion = $app->latestVersion[0];
-	$latestUpdateLog = $app->latestUpdateLog[0];
-	$source = $app->source[0];
-	?>
+            $searchName = isset($_GET['name']);
+
+            $appFile = "data/app-list.xml";
+            $appXML = simplexml_load_file($appFile);
+            $index = 0;
+            foreach ($appXML->children() as $app) {
+                $name = $app->name[0];
+                if ($searchName) {
+                    if (!stristr($name, $_GET['name']))
+                        continue;
+                }
+                $icon = $app->icon[0];
+                $type = $app->type[0];
+                $packageName = $app->packageName[0];
+                $description = $app->description[0];
+                $latestVersion = $app->latestVersion[0];
+                $latestUpdateLog = $app->latestUpdateLog[0];
+                $source = $app->source[0];
+                ?>
                 <div class="mdui-card mdui-hoverable mdui-col-xs-12 mdui-m-t-4">
                     <!-- 卡片头部，包含头像、标题、副标题 -->
                     <div class="mdui-card-header">
@@ -84,17 +93,17 @@ foreach ($appXML->children() as $app) {
                     </div>
                 </div>
                 <?php
-$index++;
-}
-?>
+                $index++;
+            }
+            ?>
         </div>
     </div>
     <?php
-$aboutFile = "data/about.xml";
-$aboutXML = simplexml_load_file($aboutFile);
-$emailLink = $aboutXML->emailLink[0];
-$qqGroup = $aboutXML->qqGroup[0];
-?>
+    $aboutFile = "data/about.xml";
+    $aboutXML = simplexml_load_file($aboutFile);
+    $emailLink = $aboutXML->emailLink[0];
+    $qqGroup = $aboutXML->qqGroup[0];
+    ?>
     <!--关于页-->
     <div id="about" class="mdui-container mdui-m-t-2">
         <div class="mdui-row">
@@ -154,13 +163,13 @@ $qqGroup = $aboutXML->qqGroup[0];
         </div>
     </div>
     <?php
-$index = 0;
-foreach ($appXML->children() as $app) {
-	$downloadLink = $app->downloadLink[0];
-	$coolapkQRCode = $downloadLink->children()->coolapkQRCode[0];
-	$coolapk = $downloadLink->children()->coolapk[0];
-	$googlePlay = $downloadLink->children()->googlePlay[0];
-	?>
+    $index = 0;
+    foreach ($appXML->children() as $app) {
+        $downloadLink = $app->downloadLink[0];
+        $coolapkQRCode = $downloadLink->children()->coolapkQRCode[0];
+        $coolapk = $downloadLink->children()->coolapk[0];
+        $googlePlay = $downloadLink->children()->googlePlay[0];
+        ?>
         <!--下载对话框-->
         <div class="mdui-dialog" id="downloadDialog<?php echo $index ?>">
             <div class="mdui-dialog-title">下载</div>
@@ -181,27 +190,27 @@ foreach ($appXML->children() as $app) {
             </div>
         </div>
         <?php
-$index++;
-}
-$index = 0;
-foreach ($appXML->children() as $app) {
-	?>
+        $index++;
+    }
+    $index = 0;
+    foreach ($appXML->children() as $app) {
+        ?>
         <!--历史下载对话框-->
         <div class="mdui-dialog" id="history<?php echo $index ?>">
             <div class="mdui-dialog-title">历史版本下载</div>
             <div class="mdui-dialog-content mdui-list">
                 <?php
-foreach ($app->history[0]->children() as $apk) {
-		$url = $apk->attributes();
-		echo "<a href='$url' class='mdui-list-item mdui-ripple'>$apk</a>";
-	}
-	?>
+                foreach ($app->history[0]->children() as $apk) {
+                    $url = $apk->attributes();
+                    echo "<a href='$url' class='mdui-list-item mdui-ripple'>$apk</a>";
+                }
+                ?>
             </div>
         </div>
         <?php
-$index++;
-}
-?>
+        $index++;
+    }
+    ?>
 </div>
 </body>
 </html>
