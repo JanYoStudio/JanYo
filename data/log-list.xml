@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<log-list>
+    <app>
+        <name>JY Share</name>
+        <logs>
+            <log>
+                <version>3.0.0-beta1_217</version>
+                <vendor>OPPO</vendor>
+                <model>OPPO R11 Plus</model>
+                <androidSDK>6.0.1_23</androidSDK>
+                <date>2017-08-28 17:11:56</date>
+                <logFile>crash2017-08-28 17_11_56.log</logFile>
+            </log>
+        </logs>
+    </app>
+</log-list>

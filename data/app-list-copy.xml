@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<app-list>
+    <app>
+        <name>JY Share</name>
+        <icon>res/imgRes/com.janyo.janyoshare.png</icon>
+        <type>分享工具</type>
+        <packageName>com.janyo.janyoshare</packageName>
+        <description>
+            想要将应用分享给朋友但是复制出来是base.apk？自己懒得命名？通过QQ分享APP到QQ群，过一段时间群文件全部是base.apk？每一次清理群文件都很麻烦？ 现在，通过JY
+            Share，体验一键式操作。
+        </description>
+        <latestVersion>3.0.2-283</latestVersion>
+        <latestUpdateLog>新增：&lt;br /&gt;&#13;
+            Android O上面可以选择图标的样式（仅在应用中可用）；&lt;br /&gt;&#13;
+            &lt;br /&gt;&#13;
+            修复：&lt;br /&gt;&#13;
+            文件管理器中使用“通过JY Share面对面分享”闪退问题；&lt;br /&gt;&#13;
+            上传日志的部分闪退操作；&lt;br /&gt;&#13;
+            &lt;br /&gt;&#13;
+            说明：&lt;br /&gt;&#13;
+            Android O上面“提取并分享-QQ”时，QQ会提示文件不存在，这是因为Android
+            O开始（其实N就禁止了，不知道为什么还能用），系统禁止传递file://的uri给其他应用，转而使用content://的uri，但是QQ并不认识content://，所以这是QQ的问题。&lt;br
+            /&gt;&#13;
+            Android O上面如果挂了代理，无法通过搜索设备找到局域网的设备，这是因为获取本机局域网IP是获取错误，关掉代理即可。
+        </latestUpdateLog>
+        <downloadLink>
+            <coolapkQRCode>res/imgRes/qrcode-com.janyo.janyoshare.png</coolapkQRCode>
+            <coolapk>https://www.coolapk.com/apk/com.janyo.janyoshare</coolapk>
+            <googlePlay>https://play.google.com/store/apps/details?id=com.janyo.janyoshare
+            </googlePlay>
+        </downloadLink>
+        <source>https://github.com/JanYoStudio/JanYoShare</source>
+        <history>
+            <apk url="res/apk/com.janyo.janyoshare/JY Share-3.0.2-283.apk">3.0.2-283</apk>
+        </history>
+    </app>
+</app-list>

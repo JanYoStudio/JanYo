@@ -8,4 +8,5 @@ class APK
 {
     public $url;
     public $version;
+    public $updateLog;
 }

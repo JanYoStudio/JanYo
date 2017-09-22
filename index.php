@@ -37,6 +37,7 @@
             <?php
             $appFile = "data/app-list.xml";
             $appXML = simplexml_load_file($appFile);
+            $index = 0;
             foreach ($appXML->children() as $app) {
                 $name = $app->name[0];
                 $icon = $app->icon[0];
@@ -73,7 +74,7 @@
                     <!-- 卡片的按钮 -->
                     <div class="mdui-card-actions mdui-float-right">
                         <button class="mdui-btn mdui-ripple mdui-btn-raised mdui-color-blue"
-                                mdui-dialog="{target: '#downloadDialog'}">下载
+                                mdui-dialog="{target: '#downloadDialog<?php echo $index ?>'}">下载
                         </button>
                         <a href="<?php echo $source ?>">
                             <button class="mdui-btn mdui-ripple mdui-btn-raised mdui-color-blue">源码</button>
@@ -81,10 +82,7 @@
                     </div>
                 </div>
                 <?php
-                $downloadLink = $app->downloadLink[0];
-                $coolapkQRCode = $downloadLink->children()->coolapkQRCode[0];
-                $coolapk = $downloadLink->children()->coolapk[0];
-                $googlePlay = $downloadLink->children()->googlePlay[0];
+                $index++;
             }
             ?>
         </div>
@@ -153,37 +151,55 @@
             </div>
         </div>
     </div>
-    <!--下载对话框-->
-    <div class="mdui-dialog" id="downloadDialog">
-        <div class="mdui-dialog-title">下载</div>
-        <div class="mdui-dialog-content">
-            <p>酷安下载二维码</p>
-            <p><img src="<?php echo $coolapkQRCode ?>"/></p>
+    <?php
+    $index = 0;
+    foreach ($appXML->children() as $app) {
+        $downloadLink = $app->downloadLink[0];
+        $coolapkQRCode = $downloadLink->children()->coolapkQRCode[0];
+        $coolapk = $downloadLink->children()->coolapk[0];
+        $googlePlay = $downloadLink->children()->googlePlay[0];
+        ?>
+        <!--下载对话框-->
+        <div class="mdui-dialog" id="downloadDialog<?php echo $index ?>">
+            <div class="mdui-dialog-title">下载</div>
+            <div class="mdui-dialog-content">
+                <p>酷安下载二维码</p>
+                <p><img src="<?php echo $coolapkQRCode ?>"/></p>
+            </div>
+            <div class="mdui-dialog-actions mdui-dialog-actions-stacked">
+                <a href="<?php echo $coolapk ?>">
+                    <button class="mdui-btn mdui-ripple">酷安下载</button>
+                </a>
+                <a href="<?php echo $googlePlay ?>">
+                    <button class="mdui-btn mdui-ripple">Google Play下载</button>
+                </a>
+                <button class="mdui-btn mdui-ripple" mdui-dialog-close
+                        mdui-dialog="{target: '#history<?php echo $index ?>'}">历史下载
+                </button>
+            </div>
         </div>
-        <div class="mdui-dialog-actions mdui-dialog-actions-stacked">
-            <a href="<?php echo $coolapk ?>">
-                <button class="mdui-btn mdui-ripple">酷安下载</button>
-            </a>
-            <a href="<?php echo $googlePlay ?>">
-                <button class="mdui-btn mdui-ripple">Google Play下载</button>
-            </a>
-            <button class="mdui-btn mdui-ripple" mdui-dialog-close
-                    mdui-dialog="{target: '#history'}">历史下载
-            </button>
+        <?php
+        $index++;
+    }
+    $index = 0;
+    foreach ($appXML->children() as $app) {
+        ?>
+        <!--历史下载对话框-->
+        <div class="mdui-dialog" id="history<?php echo $index ?>">
+            <div class="mdui-dialog-title">历史版本下载</div>
+            <div class="mdui-dialog-content mdui-list">
+                <?php
+                foreach ($app->history[0]->children() as $apk) {
+                    $url = $apk->attributes();
+                    echo "<a href='$url' class='mdui-list-item mdui-ripple'>$apk</a>";
+                }
+                ?>
+            </div>
         </div>
-    </div>
-    <!--历史下载对话框-->
-    <div class="mdui-dialog" id="history">
-        <div class="mdui-dialog-title">历史版本下载</div>
-        <div class="mdui-dialog-content mdui-list">
-            <?php
-            foreach ($app->history[0]->children() as $apk) {
-                $url = $apk->attributes();
-                echo "<a href='$url' class='mdui-list-item mdui-ripple'>$apk</a>";
-            }
-            ?>
-        </div>
-    </div>
+        <?php
+        $index++;
+    }
+    ?>
 </div>
 </body>
 </html>

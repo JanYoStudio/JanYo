@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="//cdn.bootcss.com/mdui/0.3.0/css/mdui.min.css">
     <script src="//cdn.bootcss.com/mdui/0.3.0/js/mdui.min.js"></script>
-    <title>Title</title>
+    <title>管理员操作</title>
 </head>
 <body>
 <div>
@@ -14,7 +14,7 @@
             <table class="mdui-table mdui-table-hoverable">
                 <thead>
                 <tr>
-                    <th>#</th>
+                    <th class="mdui-table-col-numeric">#</th>
                     <th>APP</th>
                     <th>版本号</th>
                     <th>操作</th>
@@ -38,7 +38,9 @@
                             <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue"
                                     mdui-dialog="{target: '#updateAPK<?php echo $index ?>'}">更新应用
                             </button>
-                            <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue">查看日志</button>
+                            <a href="showLog.php?appName=<?php echo $name ?>">
+                                <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-blue">查看日志</button>
+                            </a>
                         </td>
                     </tr>
                     <?php
@@ -145,7 +147,7 @@
                       id="newAPK-<?php echo $packageName ?>"
                       method="post">
                     <?php echo "<input name='name' type='text' value='$name' hidden/>" ?>
-                    <?php echo "<input name='name' type='text' value='$name' hidden/>" ?>
+                    <?php echo "<input name='packageName' type='text' value='$packageName' hidden/>" ?>
                     <div class="mdui-textfield mdui-textfield-floating-label">
                         <label class="mdui-textfield-label">本次版本</label>
                         <input class="mdui-textfield-input" type="text" name="apkVersion"/>

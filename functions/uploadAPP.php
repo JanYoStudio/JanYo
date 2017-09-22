@@ -4,20 +4,11 @@
  * User: myste
  */
 header("Content-type:text/html;charset=utf-8");
-require_once 'functions.php';
+require_once '../functions/functions.php';
 require_once '../classes/APP.php';
+$manager = '../manager.php';
 
-if (!$_FILES) {
-    alertMessage('文件不存在！');
-    echo "<script language=JavaScript> location.replace('../manager.php');</script>";
-    exit;
-}
 $name = $_POST['name'];
-if ($name == '') {
-    alertMessage('数据异常！');
-    echo "<script language=JavaScript> location.replace('../manager.php');</script>";
-    exit;
-}
 $type = $_POST['type'];
 $packageName = $_POST['packageName'];
 $description = $_POST['description'];
@@ -37,12 +28,12 @@ $file_target_address = "../res/apk/$packageName/";
 
 if (!mkdirs($img_target_address)) {
     alertMessage("创建文件夹失败！");
-    echo "<script language=JavaScript> location.replace('../manager.php');</script>";
+    forwardTo($manager);
     return;
 }
 if (!mkdirs($file_target_address)) {
     alertMessage("创建文件夹失败！");
-    echo "<script language=JavaScript> location.replace('../manager.php');</script>";
+    forwardTo($manager);
     return;
 }
 
@@ -51,36 +42,56 @@ if ($icon_error == 0 && $tag) {
     $mes = uploadFile("$packageName.png", $icon_tmp_name, $img_target_address);
     if (!$mes) {
         $tag = false;
-        echo "<script language=JavaScript> location.replace('../manager.php');</script>";
+        forwardTo($manager);
     }
+} else {
+    $error = getUploadError($icon_error);
+    alertMessage($error);
+    forwardTo($manager);
+    return;
 }
 if ($coolapkQRCode_error == 0 && $tag) {
     $mes = uploadFile("qrcode-$packageName.png", $coolapkQRCode_tmp_name, $img_target_address);
     if (!$mes) {
         $tag = false;
-        echo "<script language=JavaScript> location.replace('../manager.php');</script>";
+        forwardTo($manager);
     }
+} else {
+    $error = getUploadError($coolapkQRCode_error);
+    alertMessage($error);
+    forwardTo($manager);
+    return;
 }
 if ($file_error == 0 && $tag) {
     $mes = uploadFile($name . '-' . $latestVersion . '.apk', $file_tmp_name, $file_target_address);
     if (!$mes) {
         $tag = false;
-        echo "<script language=JavaScript> location.replace('../manager.php');</script>";
+        forwardTo($manager);
     }
+} else {
+    $error = getUploadError($file_error);
+    alertMessage($error);
+    forwardTo($manager);
+    return;
+}
+if ($name == '') {
+    alertMessage('数据异常！');
+    forwardTo($manager);
+    exit;
 }
 
 $app = new APP();
 $app->name = $name;
-$app->icon = "res/imgRes/$packageName.png";
+$app->icon = "res/imgRes/" . "$packageName.png";
 $app->type = $type;
 $app->packageName = $packageName;
 $app->description = $description;
 $app->latestVersion = $latestVersion;
 $app->latestUpdateLog = $latestUpdateLog;
-$app->coolapkQRCode = "res/imgRes/qrcode-$packageName.png";
+$app->coolapkQRCode = "res/imgRes/" . "qrcode-$packageName.png";
 $app->coolapk = $coolapk;
 $app->googlePlay = $googlePlay;
 $app->source = $source;
 $app->apkURL = "res/apk/$packageName/" . $name . '-' . $latestVersion . '.apk';
 writeAPPintoXML($app);
-echo "<script language=JavaScript> location.replace('../manager.php');</script>";
+forwardTo($manager);

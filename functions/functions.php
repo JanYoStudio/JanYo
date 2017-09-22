@@ -7,7 +7,6 @@
  * @param $targetAddress : 存放路径
  * @return bool
  */
-
 function uploadFile($filename, $tmp_name, $targetAddress)
 {
     if (file_exists($targetAddress . $filename)) {
@@ -69,6 +68,16 @@ function alertMessage($message)
 function snackBarMessage($message)
 {
     echo "<script language='javascript'>mdui.snackbar({message: '$message',timeout: 1500});</script>";
+}
+
+function logMessage($message)
+{
+    echo "<script language='javascript'>console.log('$message');</script>";
+}
+
+function forwardTo($url)
+{
+    echo "<script language=JavaScript> location.replace('$url');</script>";
 }
 
 /**
@@ -144,15 +153,168 @@ function writeAPPintoXML(APP $app)
     $file->save($appFile);
 }
 
-function writeAPKtoXML(APK $apk)
+/**
+ * Created by PhpStorm.
+ * User: myste
+ * @param $name : APP名称
+ * @param APK $apk : 写入的APK对象
+ */
+function writeAPKtoXML($name, APK $apk)
 {
     $appFile = "../data/app-list.xml";
     $file = new DOMDocument();
     $file->load($appFile);
-    $targetNode = $file->getElementsByTagName('app-list')->item(0)->getElementsByTagName('history')->item(0);
+    $item = null;
+    foreach ($file->documentElement->getElementsByTagName('app') as $app) {
+        if ($app->getElementsByTagName('name')->item(0)->nodeValue == $name) {
+            $item = $app;
+            break;
+        }
+    }
+    if ($item == null) {
+        alertMessage('未找到对应APP');
+        forwardTo('../manager.php');
+        exit();
+    }
+    $item->getElementsByTagName('latestVersion')->item(0)->nodeValue = $apk->version;
+    $item->getElementsByTagName('latestUpdateLog')->item(0)->nodeValue = $apk->updateLog;
+    $targetNode = $item->getElementsByTagName('history')->item(0);
     $newAPK = $file->createElement('apk');
     $newAPK->setAttribute('url', $apk->url);
     $newAPK->nodeValue = $apk->version;
     $targetNode->appendChild($newAPK);
     $file->save($appFile);
+}
+
+/**
+ * Created by PhpStorm.
+ * User: myste
+ * @param Log $log : 要存储的log信息
+ * @return bool: 返回存储结果
+ */
+function writeLogToXML(Log $log)
+{
+    $logFile = '../data/log-list.xml';
+    $file = new DOMDocument();
+    $file->load($logFile);
+    $targetNode = null;
+    foreach ($file->documentElement->getElementsByTagName('app') as $app) {
+        if ($app->getElementsByTagName('name')->item(0)->nodeValue == $log->appName) {
+            $targetNode = $app;
+            break;
+        }
+    }
+    if ($targetNode == null) {
+        return false;
+    }
+    $logsNode = $targetNode->getElementsByTagName("logs")->item(0);
+    $logNode = $file->createElement('log');
+    $versionNode = $file->createElement('version');
+    $versionNode->nodeValue = $log->version;
+    $vendorNode = $file->createElement('vendor');
+    $vendorNode->nodeValue = $log->vendor;
+    $modelNode = $file->createElement('model');
+    $modelNode->nodeValue = $log->model;
+    $sdkNode = $file->createElement('androidSDK');
+    $sdkNode->nodeValue = $log->androidSDK;
+    $dateNode = $file->createElement('date');
+    $dateNode->nodeValue = $log->date;
+    $logFileNode = $file->createElement('logFile');
+    $logFileNode->nodeValue = $log->logFile;
+    $logNode->appendChild($versionNode);
+    $logNode->appendChild($vendorNode);
+    $logNode->appendChild($modelNode);
+    $logNode->appendChild($sdkNode);
+    $logNode->appendChild($dateNode);
+    $logNode->appendChild($logFileNode);
+    $logsNode->appendChild($logNode);
+    $file->save($logFile);
+    return true;
+}
+
+/**
+ * Created by PhpStorm.
+ * User: myste
+ * @param $appName : 要查询的APP名称
+ * @return string: 返回查询到的包名
+ */
+function getPackageName($appName)
+{
+    $appFile = "../data/app-list.xml";
+    $file = new DOMDocument();
+    $file->load($appFile);
+    $item = null;
+    foreach ($file->documentElement->getElementsByTagName('app') as $app) {
+        if ($app->getElementsByTagName('name')->item(0)->nodeValue == $appName) {
+            $item = $app;
+            break;
+        }
+    }
+    if ($item == null) {
+        return 'null';
+    } else {
+        return $item->getElementsByTagName('packageName')->item(0)->nodeValue;
+    }
+}
+
+/**
+ * Created by PhpStorm.
+ * User: myste
+ * @param $fileName : 作为附件发送的日志文件名
+ */
+function sendEmail($fileName)
+{
+    $email_list_xml_file = "../data/email-list.xml";
+    $email_list = new DOMDocument();
+    $email_list->load($email_list_xml_file);
+    $emailNode = $email_list->getElementsByTagName("email");
+    for ($i = 0; $i < $emailNode->length; $i++) {
+        $address = $emailNode->item($i)->nodeValue;
+        //发送邮件
+        send($address, $fileName);
+    }
+}
+
+/**
+ * Created by PhpStorm.
+ * User: myste
+ * @param $address : 收件人地址
+ * @param $fileName : 文件名
+ * @return bool: 发送成功与否
+ */
+//发送邮件
+function send($address, $fileName)
+{
+    require '../lib/mail/PHPMailerAutoload.php';
+    $date = $_POST['date'];
+    $appName = $_POST['appName'];
+    $appVersion = $_POST['appVersionName'] . "_" . $_POST['appVersionCode'];
+    $androidVersion = $_POST['androidVersion'] . "_" . $_POST['sdk'];
+    $vendor = $_POST['vendor'];
+    $model = $_POST['model'];
+
+    $mail = new PHPMailer;
+    $mail->isSMTP(); // Set mailer to use SMTP
+    $mail->Host = 'smtp.aliyun.com'; // Specify main and backup SMTP servers
+    $mail->SMTPAuth = true; // Enable SMTP authentication
+    $mail->CharSet = 'UTF-8'; //设置邮件内容编码
+    $mail->Username = 'janyo.studio@aliyun.com'; // SMTP username
+    $mail->Password = 'JanYoStudio666'; // SMTP password
+    $mail->Port = 25; // TCP port to connect to
+    // $mail->SMTPSecure = "ssl";
+
+    $mail->setFrom('janyo.studio@aliyun.com', $appName);
+    $mail->addAddress($address, 'JanYo Studio'); // Add a recipient
+    $fileAddress = "uploadfile/" . $fileName;
+    $mail->addAttachment("$fileAddress"); // Add attachments（附件）
+    $mail->isHTML(true); // Set email format to HTML
+
+    $mail->Subject = $appName . "_" . $appVersion . "在" . $date . "日志";
+    $mail->Body = "<p>OS Version: " . $androidVersion . "</p><p>Vendor: " . $vendor . "</p><p>Model: " . $model . "</p>";
+
+    if (!$mail->send()) {
+        return false;
+    } else {
+        return true;
+    }
 }
